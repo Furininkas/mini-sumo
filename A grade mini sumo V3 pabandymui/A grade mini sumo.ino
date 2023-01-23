@@ -337,7 +337,6 @@ void vaziuojam(int state){
         delay(50);
         break;
     }
-  loop();
 }
 
 
