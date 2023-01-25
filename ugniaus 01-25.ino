@@ -16,11 +16,11 @@ int speed_Correct = 1.15;
 int klinija;
 int dlinija;
 
-#define kaireStatu 36
-#define kaireKampu 39 
+#define kaireStatu 32
+#define kaireKampu 35
 #define vidurys 34
-#define desineKampu 35 
-#define desineStatu 32
+#define desineKampu 39 
+#define desineStatu 36
 
 int atstumasKaireStatu;
 int atstumasKaireKampu;
@@ -188,7 +188,7 @@ void setup() {
     delay(100);
     drive(0,0);
     delay(100);
-    while(atstumasDesineKampu>250 && atstumasVidurys>250 && atstumasKaireKampu>250){
+    while(atstumasDesineKampu>340 && atstumasVidurys>340 && atstumasKaireKampu>340){
       sensors();
       currentTime = millis();
       
@@ -214,7 +214,7 @@ void setup() {
     delay(50);
     drive(-50,50);
     delay(100);
-    while(klinija>500){
+    while(klinija==1){
       sensors();
       drive(70,70);
     }
@@ -231,7 +231,7 @@ void setup() {
     delay(50);
     drive(50,-50);
     delay(100);
-    while(dlinija>500){
+    while(dlinija==1){
       sensors();
       drive(70,70);
     }
@@ -244,10 +244,10 @@ void setup() {
   }
 }
 int state;
-int time;
+int timeA;
 int currentTime1;
 void vaziuojam(int state){
-  time = millis();
+  timeA = millis();
   switch(state){
       case 0:
         if(code==8){
@@ -284,9 +284,9 @@ void vaziuojam(int state){
         milk=0;
         break; 
       case 5:
-        while(atstumasVidurys>400){
+        while(atstumasVidurys>300){
           currentTime1 = millis();
-          if(currentTime1 - time>300) break;
+          if(currentTime1 - timeA>400) break;
           sensors();
           drive(50,-50);
         }
@@ -295,9 +295,9 @@ void vaziuojam(int state){
         currentTime1 = 0;
         break;
       case 6:
-        while(atstumasVidurys>400){
+        while(atstumasVidurys>300){
           currentTime1 = millis();
-          if(currentTime1 - time>300) break;
+          if(currentTime1 - timeA>400) break;
           sensors();
           drive(-50,50);
         }
@@ -308,7 +308,7 @@ void vaziuojam(int state){
       case 7:
         while(atstumasVidurys>400){
           currentTime1 = millis();
-          if(currentTime1 - time>500) break;
+          if(currentTime1 - timeA>600) break;
           sensors();
           drive(-50,50);
         }
@@ -319,7 +319,7 @@ void vaziuojam(int state){
       case 8:
         while(atstumasVidurys>400){
           currentTime1 = millis();
-          if(currentTime1 - time>500) break;
+          if(currentTime1 - timeA>600) break;
           sensors();
           drive(50,-50);
         }
@@ -332,30 +332,35 @@ void vaziuojam(int state){
         break;
       case 10:
         drive(80,80);
-        delay(50):
+        delay(50);
         drive(0,0);
         delay(50);
         break;
     }
 }
 
-
+int timePriekiui;
+int timePaskutinis=0;
 void loop() {
   sensors();
   state=0;
+  timePriekiui = millis();
+  if(timePriekiui-timePaskutinis>1000){
     if(atstumasVidurys>100){
       state=10;
     }
-    if(atstumasKaireStatu<360){
+    timePaskutinis=timePriekiui;
+  } 
+    if(atstumasKaireStatu<250){
       state=7;
     }
-    if(atstumasDesineStatu<360){
+    if(atstumasDesineStatu<250){
       state=8;
     }
-    if(atstumasKaireKampu<360){
+    if(atstumasKaireKampu<250){
       state=5;
     }
-    if(atstumasDesineKampu<360){
+    if(atstumasDesineKampu<250){
       state=6;
     }
    /* if(atstumasKaireKampu<250 && atstumasDesineKampu<250){
@@ -373,7 +378,7 @@ void loop() {
     if(klinija==0 && dlinija==0){
       state=3;
     } 
-     
+   //Serial.println(state);
   
   if(code==67 || code==12 || code==24 || code==94){  
     vaziuojam(state);
