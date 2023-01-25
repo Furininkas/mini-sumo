@@ -284,7 +284,7 @@ void vaziuojam(int state){
         milk=0;
         break; 
       case 5:
-        while(atstumasVidurys>100){
+        while(atstumasVidurys>300){
           currentTime1 = millis();
           if(currentTime1 - timeA>400) break;
           sensors();
@@ -295,7 +295,7 @@ void vaziuojam(int state){
         currentTime1 = 0;
         break;
       case 6:
-        while(atstumasVidurys>100){
+        while(atstumasVidurys>300){
           currentTime1 = millis();
           if(currentTime1 - timeA>400) break;
           sensors();
